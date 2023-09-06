@@ -1,6 +1,7 @@
-const http = require("http");
 const express = require("express");
 const app = express();
+const multer = require("multer");
+const path = require("path");
 
 app.use(express.static("public"));
 // require("dotenv").config();
@@ -85,7 +86,6 @@ app.get('/', (req, res) => {
 const multer = require("multer");
 const path = require("path");
 
-// 설정: 파일 업로드를 위한 저장소 및 업로드 미들웨어 설정
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/"); // 파일을 저장할 디렉터리
