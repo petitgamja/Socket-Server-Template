@@ -81,3 +81,30 @@ const broadcast = (ws, message, includeSelf) => {
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+
+const multer = require("multer");
+const path = require("path");
+
+// 설정: 파일 업로드를 위한 저장소 및 업로드 미들웨어 설정
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // 파일을 저장할 디렉터리
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext); // 파일 이름 설정 (고유한 이름)
+  },
+});
+
+const upload = multer({ storage });
+
+// 파일 업로드를 처리할 엔드포인트
+app.post("/upload", upload.single("file"), (req, res) => {
+  // 업로드된 파일 정보는 req.file을 통해 사용 가능
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  const uploadedFilePath = req.file.path;
+  res.status(200).send(`File uploaded to: ${uploadedFilePath}`);
+});
