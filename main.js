@@ -83,7 +83,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-const path = require("path");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
